@@ -1,0 +1,42 @@
+name: GHA Summarizer
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "README.md"
+      - "LICENSE"
+env:
+  image: ghcr.io/${{ github.repository }}/gha-summarizer
+
+jobs:
+  test:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Render template
+        uses: ./
+        with:
+          template: example/template.md
+          out-file: out.md
+
+      - name: Check if the rendered file is different
+        run: |
+          diff --unified ./example/result.md ./out.md | tee diff.txt
+          if [ -s diff.txt ]; then
+            echo "The rendered file is different from the template"
+            exit 1
+          fi
+      - name: Upload diff
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: diff.txt
+          path: diff.txt

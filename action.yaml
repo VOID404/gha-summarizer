@@ -1,0 +1,15 @@
+name: "GHA Summarizer"
+description: "Simple templating for Github Actions"
+inputs:
+  template:
+    description: "Template to render"
+    required: true
+  out-file:
+    description: "File to write output to"
+    required: true
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.template }}
+    - ${{ inputs.out-file }}
