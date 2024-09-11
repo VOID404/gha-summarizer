@@ -19,19 +19,6 @@ func main() {
 		panic(err)
 	}
 
-	funcMap := make(map[string]any)
-	funcMap["file"] = func(name string) string {
-		data, err := os.ReadFile(name)
-		if err != nil {
-			panic(err)
-		}
-		return string(data)
-	}
-
-	funcMap["env"] = func(text string) string {
-		return os.ExpandEnv(text)
-	}
-
 	tpl := template.Must(
 		template.New(path.Base(tplFile)). //
 							Funcs(funcMap).
