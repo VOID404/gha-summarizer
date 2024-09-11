@@ -4,6 +4,7 @@ WORKDIR /workdir
 
 COPY go.mod ./
 COPY ./main.go ./
+COPY ./functions.go ./
 
 RUN go build -o gha-summarizer github.com/VOID404/gha-summarizer
 
