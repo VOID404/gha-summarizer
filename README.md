@@ -17,6 +17,18 @@ It supports usual Go templating features, check [text/template](https://golang.o
 ## Functions
 Additionally some helper functions are provided:
 
+### `filep`
+
+Check if file exists.
+````md
+{{ if filep "./example/code.go" -}}
+```go
+{{ file "./example/code.go"}}
+```
+{{- end }}
+````
+---
+
 ### `file`
 
 Embedd file content in the template.
@@ -25,6 +37,16 @@ Embedd file content in the template.
 ```go
 {{ file "./example/code.go"}}
 ```
+````
+---
+
+### `envp`
+
+Checks if environment variable is set.
+````md
+{{ if envp "GITHUB_REPOSITORY" -}}
+{{ env "$GITHUB_REPOSITORY }}
+{{- end }}
 ````
 ---
 
